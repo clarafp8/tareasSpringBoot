@@ -2,8 +2,6 @@ package com.movie.movie.entidad;
 
 import java.time.LocalDate;
 
-import com.movie.movie.entidad.Director;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -29,7 +27,7 @@ public class Pelicula {
 	    private LocalDate fechaLanzamiento;
 
 	    @NotNull(message = "La duración es obligatoria")
-	    private Double duracion;
+	    private int duracion;
 
 	    @ManyToOne (fetch = FetchType.LAZY)
 	    @JoinColumn(name = "director_id", nullable = false)
@@ -60,12 +58,12 @@ public class Pelicula {
 		this.fechaLanzamiento = fechaLanzamiento;
 	}
 
-	public Double getDuracion() {
+	public int getDuracion() {
 		return duracion;
 	}
 
-	public void setDuracion(Double duracion) {
-		this.duracion = duracion;
+	public void setDuracion(int i) {
+		this.duracion = i;
 	}
     
 	 public void setDirector(Director director) {

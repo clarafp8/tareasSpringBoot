@@ -1,5 +1,6 @@
 package com.movie.movie.entidad;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import jakarta.persistence.CascadeType;
@@ -19,7 +20,7 @@ public class Director {
     private String nombre;
 
     @OneToMany(mappedBy = "director" , cascade = CascadeType.ALL)
-    private List<Pelicula> peliculas;
+    private List<Pelicula> peliculas = new ArrayList<>();
 
 	public Long getId() {
 		return id;
