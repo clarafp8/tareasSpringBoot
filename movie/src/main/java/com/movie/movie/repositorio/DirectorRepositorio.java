@@ -6,4 +6,5 @@ import com.movie.movie.entidad.Director;
 
 public interface DirectorRepositorio extends JpaRepository<Director, Long> {
 
+
 }

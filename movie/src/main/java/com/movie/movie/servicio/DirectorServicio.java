@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 import com.movie.movie.entidad.Director;
 import com.movie.movie.repositorio.DirectorRepositorio;
 
+import jakarta.validation.Valid;
+
 @Service
 public class DirectorServicio {
 
@@ -31,4 +33,8 @@ public class DirectorServicio {
     public void eliminarAutor(Long id) {
     	directorRepositorio.deleteById(id);
     }
+
+	public Director guardarDirector(Director director) {
+		return directorRepositorio.save(director);
+	}
 }
