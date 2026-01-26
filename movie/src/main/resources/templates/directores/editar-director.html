@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Editar Director</title>
+</head>
+<body>
+<h2>Editar Director</h2>
+<form th:action="@{/directores/editar/{id}/director(id=${director.id})}" method="post">
+    <label>Nombre:</label>
+    <input type="text" name="nombre" th:value="${director.nombre}" required />
+    <label>Fecha de Nacimiento:</label>
+    <input type="date" name="fechaNacimiento" th:value="${director.fechaNacimiento}" required />
+    <button type="submit">Guardar Director</button>
+</form>
+
+<h2>Editar Películas</h2>
+<div th:each="pelicula : ${peliculas}">
+    <form th:action="@{/directores/editar/{id}/pelicula(id=${director.id})}" method="post">
+        <input type="hidden" name="peliculaId" th:value="${pelicula.id}" />
+        <label>Título:</label>
+        <input type="text" name="titulo" th:value="${pelicula.titulo}" required />
+        <label>Duración:</label>
+        <input type="number" name="duracion" th:value="${pelicula.duracion}" required />
+        <label>Fecha de Lanzamiento:</label>
+        <input type="date" name="fechaLanzamiento" th:value="${pelicula.fechaLanzamiento}" required />
+        <button type="submit">Guardar Película</button>
+    </form>
+    <hr/>
+</div>
+</body>
+</html>

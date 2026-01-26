@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Directores por Películas hechas</title>
+        	<link rel="stylesheet" href="/css/estilos.css">
+</head>
+<body>
+	<h1>Seleccione una Película</h1>
+
+	<form th:action="@{/directores/peliculas}" method="get">
+	    <select name="peliculaId">
+	        <option value="">--Seleccione una Película--</option>
+	        <option th:each="pelicula : ${peliculas}" 
+	                th:value="${pelicula.id}" 
+	                th:text="${pelicula.titulo}">
+	        </option>
+	    </select>
+	    <button type="submit">Ver Directores</button>
+	</form>
+
+	<div th:if="${pelicula != null}">
+	    <h2 th:text="'Director que ha participado en: ' + ${pelicula.titulo}"></h2>
+
+	    <div th:if="${director != null}">
+	        <table>
+	            <thead>
+	                <tr>
+	                    <th>Nombre</th>
+	                </tr>
+	            </thead>
+	            <tbody>
+	                <tr>
+	                    <td th:text="${director.nombre}"></td>
+	                </tr>
+	            </tbody>
+	        </table>
+	    </div>
+	</div>
+
+	<a th:href="@{/directores/nuevo}" class="button">Añadir Nuevo Director</a>
+
+</body>
+</html>
+

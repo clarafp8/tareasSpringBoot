@@ -1,6 +1,8 @@
 package com.movie.movie.entidad;
 
 import java.time.LocalDate;
+import java.util.List;
+
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -8,7 +10,9 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Past;
 
@@ -26,12 +30,13 @@ public class Pelicula {
 	    @Past(message = "La fecha de lanzamiento debe ser en el pasado")
 	    private LocalDate fechaLanzamiento;
 
-	    @NotNull(message = "La duración es obligatoria")
+	    @Min(value = 1, message = "La duración debe ser mayor que 0")
 	    private int duracion;
 
 	    @ManyToOne (fetch = FetchType.LAZY)
 	    @JoinColumn(name = "director_id", nullable = false)
 	    private Director director;
+	    
 
 
 	public Long getId() {
@@ -65,10 +70,15 @@ public class Pelicula {
 	public void setDuracion(int i) {
 		this.duracion = i;
 	}
-    
+
+	public Director getDirector() {
+        return director;
+    }
 	 public void setDirector(Director director) {
 	        this.director = director;
 	    }
+	
     
+
 
 }

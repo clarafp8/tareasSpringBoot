@@ -1,7 +1,9 @@
 package com.movie.movie.entidad;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -18,8 +20,17 @@ public class Director {
     private Long id;
 
     private String nombre;
+    private LocalDate fechaNacimiento;
 
-    @OneToMany(mappedBy = "director" , cascade = CascadeType.ALL)
+    public LocalDate getFechaNacimiento() {
+		return fechaNacimiento;
+	}
+
+	public void setFechaNacimiento(LocalDate fechaNacimiento) {
+		this.fechaNacimiento = fechaNacimiento;
+	}
+
+	@OneToMany(mappedBy = "director" , cascade = CascadeType.ALL)
     private List<Pelicula> peliculas = new ArrayList<>();
 
 	public Long getId() {
@@ -44,6 +55,10 @@ public class Director {
 
 	public void setPeliculas(List<Pelicula> peliculas) {
 		this.peliculas = peliculas;
+	}
+	
+	public boolean agregaPeliculas(Pelicula pelicula) {
+		return peliculas.add(pelicula);
 	}
     
     

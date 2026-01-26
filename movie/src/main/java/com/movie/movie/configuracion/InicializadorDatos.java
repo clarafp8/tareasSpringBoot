@@ -10,13 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
+import com.github.javafaker.Faker;
 import com.movie.movie.entidad.Director;
 import com.movie.movie.entidad.Pelicula;
-import com.movie.movie.repositorio.DirectorRepositorio;
-import com.movie.movie.repositorio.PeliculaRepositorio;
-
-
-import com.github.javafaker.Faker;
 import com.movie.movie.repositorio.DirectorRepositorio;
 import com.movie.movie.repositorio.PeliculaRepositorio;
 

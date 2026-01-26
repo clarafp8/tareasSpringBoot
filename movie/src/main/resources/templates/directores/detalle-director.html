@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	 <link rel="stylesheet" href="../../static/css/estilos.css">
+	 <title>Detalles</title>
+</head>
+
+<body>
+	<!-- Mensaje de éxito -->
+<div th:if="${mensajeExito}" class="alert alert-success">
+    <p th:text="${mensajeExito}"></p>
+</div>
+
+<!-- Mensaje de error -->
+<div th:if="${mensajeError}" class="alert alert-danger">
+    <p th:text="${mensajeError}"></p>
+</div>
+
+	<h2>Detalles del Director</h2>
+	<div>
+		<p>Nombre: <span th:text="${director.nombre}"></span></p>
+		<!-- Mostrar otros detalles del estudiante -->
+	</div>
+	<div>
+		<h3>Películas</h3>
+		<ul>
+			<li th:each="pelicula : ${director.peliculas}">
+				<span th:text="${pelicula.titulo}"></span>
+			</li>
+		</ul>
+	</div>
+	<form th:action="@{/directores/agregarPelicula}" method="post">
+
+	    <input type="hidden" name="directorId" th:value="${director.id}" />
+
+	    <label>Título</label>
+	    <input type="text" name="titulo" required />
+
+	    <label>Duración (minutos)</label>
+	    <input type="number" name="duracion" required />
+
+	    <label>Fecha de lanzamiento</label>
+	    <input type="date" name="fechaLanzamiento" required />
+
+	    <button type="submit">Añadir Película</button>
+	</form>
+
+</body>
+
+</html>
