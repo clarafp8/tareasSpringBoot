@@ -1,42 +1,50 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-<meta charset="UTF-8">
-    <title>Listado de Directores</title>
-</head>
-<body>
-<h1>Listado de Directores</h1>
 
-<table border="1">
-    <thead>
-        <tr>
-            <th>Nombre</th>
-            <th>Películas que ha hecho</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr th:each="director : ${directores}">
-            <td th:text="${director.nombre}"></td>
-            <td>
-				<ul>
-				        <li th:each="pelicula, iter: ${director.peliculas}"
-				            th:text="${pelicula.titulo}">
+<head>
+	<meta charset="UTF-8">
+	<title>Listado de Directores</title>
+	<link rel="stylesheet" href="/css/estilos.css">
+
+</head>
+
+<body>
+	<h1>Listado de Directores</h1>
+
+	<table border="1">
+		<thead>
+			<tr>
+				<th>Nombre</th>
+				<th>Fecha de Nacimiento</th>
+				<th>Películas que ha hecho</th>
+				<th>Opciones</th>
+
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="director : ${directores}">
+				<td th:text="${director.nombre}"></td>
+				<td th:text="${director.fechaNacimiento}"></td>
+				<td>
+					<ul>
+						<li th:each="pelicula, iter: ${director.peliculas}" th:text="${pelicula.titulo}">
 							<span th:if="${!iter.last}">, </span>
 
-				        </li>
-				    </ul>
-			</td>
-            <td>
-                <!-- Botones o enlaces para editar y eliminar -->
-                <a th:href="@{/directores/ver/{id}(id=${director.id})}">Ver</a>
-                <a th:href="@{/directores/editar/{id}(id=${director.id})}">Editar</a>
-                <a th:href="@{/directores/eliminar/{id}(id=${director.id})}">Eliminar</a>
-            </td>
-        </tr>
-    </tbody>
-</table>
+						</li>
+					</ul>
+				</td>
+				<td>
+					<!-- Botones o enlaces para editar y eliminar -->
+					<a th:href="@{/directores/ver/{id}(id=${director.id})}">Ver</a>
+					<a th:href="@{/directores/editar/{id}(id=${director.id})}">Editar</a>
+					<a th:href="@{/directores/eliminar/{id}(id=${director.id})}">Eliminar</a>
+				</td>
+			</tr>
+		</tbody>
+	</table>
 
-<a th:href="@{/directores/nuevo}" class="button">Añadir Nuevo director</a>
-<a th:href="@{/directores/peliculas}" class="button">Ver Películas del director</a>
+	<a th:href="@{/directores/nuevo}" class="button">Añadir Nuevo Director</a>
+	<a th:href="@{/directores/peliculas}" class="button">Ver detalles de las Películas</a>
 </body>
+
 </html>

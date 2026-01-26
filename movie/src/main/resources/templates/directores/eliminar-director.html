@@ -1,39 +1,42 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-    <title>Eliminar Director</title>
+	<title>Eliminar Director</title>
 </head>
+
 <body>
-		<!-- Mensaje de éxito -->
+	<!-- Mensaje de éxito -->
 	<div th:if="${mensajeExito}" class="alert alert-success">
-	    <p th:text="${mensajeExito}"></p>
+		<p th:text="${mensajeExito}"></p>
 	</div>
 
 	<!-- Mensaje de error -->
 	<div th:if="${mensajeError}" class="alert alert-danger">
-	    <p th:text="${mensajeError}"></p>
+		<p th:text="${mensajeError}"></p>
 	</div>
 
-<script>
-    // ID y nombre del director se pueden pasar desde el controlador
-    var directorId = [[${director.id}]];
-    var directorNombre = '[[${director.nombre}]]';
+	<script>
+		// ID y nombre del director se pueden pasar desde el controlador
+		var directorId = '[[${director.id}]]';
+		var directorNombre = '[[${director.nombre}]]';
 
-    if (confirm('¿Seguro que quieres eliminar al director ' + directorNombre + '?')) {
-        // Si confirma, redirige al POST de eliminación
-        fetch('/directores/eliminar/' + directorId + '/confirmar', {
-            method: 'POST'
-        }).then(() => {
-            alert('Director eliminado correctamente.');
-            window.location.href = '/directores';
-        }).catch(() => {
-            alert('Error al eliminar el director.');
-            window.location.href = '/directores';
-        });
-    } else {
-        // Si cancela, volver al listado
-        window.location.href = '/directores';
-    }
-</script>
+		if (confirm('¿Seguro que quieres eliminar al director ' + directorNombre + '?')) {
+			// Si confirma, redirige al POST de eliminación
+			fetch('/directores/eliminar/' + directorId + '/confirmar', {
+				method: 'POST'
+			}).then(() => {
+				alert('Director eliminado correctamente.');
+				window.location.href = '/directores';
+			}).catch(() => {
+				alert('Error al eliminar el director.');
+				window.location.href = '/directores';
+			});
+		} else {
+			// Si cancela, volver al listado
+			window.location.href = '/directores';
+		}
+	</script>
 </body>
+
 </html>

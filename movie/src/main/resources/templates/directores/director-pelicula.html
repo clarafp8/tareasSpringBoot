@@ -1,45 +1,51 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
-    <meta charset="UTF-8">
-    <title>Directores por Películas hechas</title>
-        	<link rel="stylesheet" href="/css/estilos.css">
+	<meta charset="UTF-8">
+	<title>Películas hechas por un director</title>
+	<link rel="stylesheet" href="/css/estilos.css">
 </head>
+
 <body>
-	<h1>Seleccione una Película</h1>
+	<h1>Seleccione un Director</h1>
 
 	<form th:action="@{/directores/peliculas}" method="get">
-	    <select name="peliculaId">
-	        <option value="">--Seleccione una Película--</option>
-	        <option th:each="pelicula : ${peliculas}" 
-	                th:value="${pelicula.id}" 
-	                th:text="${pelicula.titulo}">
-	        </option>
-	    </select>
-	    <button type="submit">Ver Directores</button>
+		<select name="directorId">
+			<option value="">--Seleccione un Director--</option>
+			<option th:each="director : ${directores}" th:value="${director.id}" th:text="${director.nombre}">
+			</option>
+		</select>
+		<button type="submit">Ver Películas</button>
 	</form>
 
-	<div th:if="${pelicula != null}">
-	    <h2 th:text="'Director que ha participado en: ' + ${pelicula.titulo}"></h2>
+	<div th:if="${director != null}">
+		<h2 th:text="'Películas que ha hecho ' + ${director.nombre}"></h2>
 
-	    <div th:if="${director != null}">
-	        <table>
-	            <thead>
-	                <tr>
-	                    <th>Nombre</th>
-	                </tr>
-	            </thead>
-	            <tbody>
-	                <tr>
-	                    <td th:text="${director.nombre}"></td>
-	                </tr>
-	            </tbody>
-	        </table>
-	    </div>
+		<div th:if="${peliculas != null}">
+			<table>
+				<thead>
+					<tr>
+						<th>Título</th>
+						<th>Duración</th>
+						<th>Fecha de estreno</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="pelicula : ${peliculas}">
+						<td th:text="${pelicula.titulo}"></td>
+						<td th:text="${pelicula.duracion} + ' ' + minutos"  ></td>
+						<td th:text="${pelicula.fechaLanzamiento}"></td>
+
+					</tr>
+				</tbody>
+			</table>
+		</div>
 	</div>
 
 	<a th:href="@{/directores/nuevo}" class="button">Añadir Nuevo Director</a>
+	<a th:href="@{/directores}" class="button">Volver</a>
 
 </body>
-</html>
 
+</html>
