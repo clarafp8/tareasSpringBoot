@@ -20,7 +20,7 @@ public class Director {
     private Long id;
 
     private String nombre;
-    private LocalDate fechaNacimiento;
+	private LocalDate fechaNacimiento;
 
     public LocalDate getFechaNacimiento() {
 		return fechaNacimiento;
