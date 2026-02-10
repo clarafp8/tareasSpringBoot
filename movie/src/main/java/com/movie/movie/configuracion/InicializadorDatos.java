@@ -41,8 +41,8 @@ public class InicializadorDatos implements CommandLineRunner  {
 	        List<Director> directores = new ArrayList<>();
 	     // Crear fechas límite
 	        
-	        // Crear 10 directores
-	        for (int i = 0; i < 10; i++) {
+	        // Crear 30 directores
+	        for (int i = 0; i < 30; i++) {
 	            Director director = new Director();
 	            director.setNombre(faker.name().fullName());
 
