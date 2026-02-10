@@ -8,7 +8,7 @@ import com.movie.movie.entidad.Pelicula;
 public interface PeliculaServicio {
 	Pelicula guardarPelicula(Pelicula pelicula);
     void eliminarPelicula(Long id);
-    List<Pelicula> listarTodosLosPelicula();
+    List<Pelicula> listarTodasLasPeliculas();
     Pelicula buscarPeliculaPorId(Long id);
     Pelicula actualizarPelicula(Long id, Pelicula pelicula);
     List<Pelicula> buscarPeliculaPorTitulo(String titulo);
