@@ -27,9 +27,12 @@ public class InicializadorDatos implements CommandLineRunner  {
 	    Date startDate = java.util.Date.from(
 	            LocalDate.of(1980, 1, 1).atStartOfDay(ZoneId.systemDefault()).toInstant()
 	        );
-	        Date endDate = java.util.Date.from(
+	        Date endDatePeli = java.util.Date.from(
 	            LocalDate.of(2023, 12, 31).atStartOfDay(ZoneId.systemDefault()).toInstant()
 	        );
+	        Date endDateDire = java.util.Date.from(
+		            LocalDate.of(1999, 12, 31).atStartOfDay(ZoneId.systemDefault()).toInstant()
+		        );
 
 	@Override
 	public void run(String... args) throws Exception {
@@ -45,6 +48,9 @@ public class InicializadorDatos implements CommandLineRunner  {
 
 	            // Inicializar lista de películas
 	            director.setPeliculas(new ArrayList<>());
+	         // ESTA ES LA LÍNEA QUE FALTA:
+	            director.setFechaNacimiento(faker.date().between(startDate, endDateDire)
+	                    .toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
 
 	            // Crear de 1 a 3 películas por director
 	            int numPeliculas = faker.number().numberBetween(1, 4);
@@ -52,11 +58,10 @@ public class InicializadorDatos implements CommandLineRunner  {
 	                Pelicula pelicula = new Pelicula();
 	                pelicula.setTitulo(faker.book().title());
 	                pelicula.setDirector(director);
-
 	                // Asignar campos obligatorios
 	                pelicula.setDuracion(faker.number().numberBetween(80, 180)); // minutos
 	                pelicula.setFechaLanzamiento(faker.date().between(startDate,
-	                		endDate).toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+	                		endDatePeli).toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
 
 	                // Añadir película al director
 	                director.getPeliculas().add(pelicula);

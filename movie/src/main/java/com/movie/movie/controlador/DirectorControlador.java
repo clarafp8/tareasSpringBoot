@@ -159,6 +159,7 @@ public class DirectorControlador {
 
 		} catch (Exception e) {
 			redirectAttributes.addFlashAttribute("mensajeError", "Error al crear la película.");
+			System.out.print(e);
 		}
 		return "redirect:/directores/ver/" + directorId;
 	}
