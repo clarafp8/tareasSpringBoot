@@ -37,7 +37,10 @@ public class Director {
     
     private String contrasena;
 
-    @Enumerated(EnumType.STRING)
+    public Director() { // recomendable (JPA necesita constructor vacío)
+	}
+
+	@Enumerated(EnumType.STRING)
     private Rol rol;
 
     public String getContrasena() {
