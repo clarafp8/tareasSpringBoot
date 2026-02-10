@@ -17,7 +17,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.movie.movie.entidad.Director;
 import com.movie.movie.entidad.Pelicula;
-import com.movie.movie.servicio.DirectorServicio;
+import com.movie.movie.servicio.DirectorService;
 
 import jakarta.validation.Valid;
 
@@ -26,11 +26,11 @@ import jakarta.validation.Valid;
 public class DirectorControlador {
 
 	@Autowired
-	private DirectorServicio directorServicio;
+	private DirectorService directorService;
 
 	@GetMapping
 	public String listarDirectores(Model model) {
-		List<Director> directores = directorServicio.listarTodos();
+		List<Director> directores = directorService.listarTodos();
 		model.addAttribute("directores", directores);
 		return "directores/listado";
 	}
@@ -46,17 +46,17 @@ public class DirectorControlador {
 		if (result.hasErrors()) {
 			return "directores/formulario";
 		}
-		directorServicio.guardarDirector(director);
+		directorService.guardarDirector(director);
 		return "redirect:/directores";
 	}
 
 	@GetMapping("/ver/{id}")
 	public String verDetalleDirector(@PathVariable Long id, Model model) {
-		Optional<Director> director = directorServicio.obtenerPorId(id);
+		Optional<Director> director = directorService.obtenerPorId(id);
 
 		if (director.isPresent()) {
 			model.addAttribute("director", director.get());
-			model.addAttribute("pelicula", directorServicio.obtenerTodasLasPeliculas().stream().distinct());
+			model.addAttribute("pelicula", directorService.obtenerTodasLasPeliculas().stream().distinct());
 
 			return "directores/detalle-director";
 		} else {
@@ -66,12 +66,12 @@ public class DirectorControlador {
 
 	@GetMapping("/editar/{id}")
 	public String mostrarEditarDirector(@PathVariable Long id, Model model) {
-		Optional<Director> directorOpt = directorServicio.obtenerPorId(id);
+		Optional<Director> directorOpt = directorService.obtenerPorId(id);
 		if (directorOpt.isPresent()) {
 			Director director = directorOpt.get();
 			model.addAttribute("director", director);
 
-			List<Pelicula> peliculas = directorServicio.obtenerPeliculasPorDirector(id);
+			List<Pelicula> peliculas = directorService.obtenerPeliculasPorDirector(id);
 			model.addAttribute("peliculas", peliculas);
 
 			return "directores/editar-director";
@@ -83,20 +83,20 @@ public class DirectorControlador {
 	@PostMapping("/editar/{id}/director")
 	public String actualizarDirector(@PathVariable Long id, @RequestParam String nombre,
 			@RequestParam String fechaNacimiento) {
-		directorServicio.actualizarDirector(id, nombre, LocalDate.parse(fechaNacimiento));
+		directorService.actualizarDirector(id, nombre, LocalDate.parse(fechaNacimiento));
 		return "redirect:/directores";
 	}
 
 	@PostMapping("/editar/{id}/pelicula")
 	public String actualizarPelicula(@PathVariable Long id, @RequestParam Long peliculaId, @RequestParam String titulo,
 			@RequestParam int duracion, @RequestParam String fechaLanzamiento) {
-		directorServicio.actualizarPelicula(peliculaId, titulo, duracion, LocalDate.parse(fechaLanzamiento));
+		directorService.actualizarPelicula(peliculaId, titulo, duracion, LocalDate.parse(fechaLanzamiento));
 		return "redirect:/directores/editar/" + id;
 	}
 
 	@GetMapping("/eliminar/{id}")
 	public String eliminarDirector(@PathVariable Long id, Model model) {
-		Optional<Director> director = directorServicio.obtenerPorId(id);
+		Optional<Director> director = directorService.obtenerPorId(id);
 
 		if (director.isPresent()) {
 			model.addAttribute("director", director.get());
@@ -108,15 +108,15 @@ public class DirectorControlador {
 
 	@PostMapping("/eliminar/{id}/confirmar")
 	public String eliminarDirector(@PathVariable Long id) {
-		Optional<Director> directorOpt = directorServicio.obtenerPorId(id);
+		Optional<Director> directorOpt = directorService.obtenerPorId(id);
 		if (directorOpt.isPresent()) {
 			Director director = directorOpt.get();
 
 			// Eliminar películas primero si existen
-			directorServicio.eliminarPeliculasDeDirector(id);
+			directorService.eliminarPeliculasDeDirector(id);
 
 			// Eliminar director
-			directorServicio.eliminarDirector(id);
+			directorService.eliminarDirector(id);
 
 		}
 		return "redirect:/directores";
@@ -126,7 +126,7 @@ public class DirectorControlador {
 	public String mostrarDirectores(@RequestParam(value = "directorId", required = false) Long directorId,
 			Model model) {
 
-		List<Director> directores = directorServicio.listarTodos();
+		List<Director> directores = directorService.listarTodos();
 		model.addAttribute("directores", directores);
 		// Inicializamos variables
 		List<Pelicula> peliculas = null;
@@ -134,9 +134,9 @@ public class DirectorControlador {
 
 		// Si se selecciona una película
 		if (directorId != null) {
-			director = directorServicio.buscarDirectorPorId(directorId);
+			director = directorService.buscarDirectorPorId(directorId);
 			if (director != null) {
-				peliculas = directorServicio.obtenerPeliculasPorDirector(directorId);
+				peliculas = directorService.obtenerPeliculasPorDirector(directorId);
 			}
 		}
 
@@ -153,7 +153,7 @@ public class DirectorControlador {
 			RedirectAttributes redirectAttributes) {
 
 		try {
-			directorServicio.crearPeliculaParaDirector(directorId, titulo, duracion, fechaLanzamiento);
+			directorService.crearPeliculaParaDirector(directorId, titulo, duracion, fechaLanzamiento);
 
 			redirectAttributes.addFlashAttribute("mensajeExito", "Película creada y asignada correctamente.");
 
