@@ -5,6 +5,9 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -29,9 +32,21 @@ public class DirectorControlador {
 	private DirectorService directorService;
 
 	@GetMapping
-	public String listarDirectores(Model model) {
-		List<Director> directores = directorService.listarTodos();
+	public String listarDirectores(Model model,
+			@PageableDefault(size = 20) Pageable page,
+			@RequestParam(required = false) String nombre) {
+		
+		Page<Director> directores;
+		if (nombre != null && !nombre.trim().isEmpty()) {
+			directores = directorService.buscarDirectoresContienenNombre(nombre, page);
+		} else {
+			directores = directorService.listarTodosLosDirectores(page);
+		}
+		
 		model.addAttribute("directores", directores);
+		model.addAttribute("total", directores.getTotalElements());
+		model.addAttribute("nombreBusqueda", nombre);
+		
 		return "directores/listado";
 	}
 
