@@ -5,18 +5,57 @@
 	<meta charset="UTF-8">
 	<title>Listado de Directores</title>
 	<link rel="stylesheet" href="/css/estilos.css">
+	<style>
+		.pagination {
+			margin-top: 20px;
+		}
 
+		.pagination a,
+		.pagination span {
+			padding: 8px 12px;
+			margin: 0 4px;
+			border: 1px solid #7b2d2d;
+			border-radius: 4px;
+			display: inline-block;
+			text-decoration: none;
+			color: #333;
+		}
+
+		.pagination a:hover {
+			background-color: rgb(232, 223, 198);
+		}
+
+		.pagination .current {
+			background-color:#7b2d2d;
+			color: white;
+			border-color: rgb(128, 0, 0);
+		}
+
+		.search-bar {
+			margin-bottom: 20px;
+		}
+
+		.search-bar input {
+			padding: 8px;
+			width: 300px;
+		}
+
+		.search-bar button {
+			padding: 8px 15px;
+			margin-left: 5px;
+		}
+	</style>
 </head>
 
 <body>
 	<h1>Listado de Directores</h1>
 	<!-- Barra de búsqueda -->
 	<div class="search-bar">
-	    <form method="get" th:action="@{/directores}">
-	        <input type="text" name="nombre" th:value="${nombreBusqueda}" placeholder="Buscar por nombre...">
-	        <button type="submit">Buscar</button>
-	        <a th:href="@{/directores}" class="button">Limpiar</a>
-	    </form>
+		<form method="get" th:action="@{/directores}">
+			<input type="text" name="nombre" th:value="${nombreBusqueda}" placeholder="Buscar por nombre...">
+			<button type="submit">Buscar</button>
+			<a th:href="@{/directores}" class="button">Limpiar</a>
+		</form>
 	</div>
 
 	<!-- Total de registros -->
@@ -49,45 +88,46 @@
 					<!-- Botones o enlaces para editar y eliminar -->
 					<a th:href="@{/directores/ver/{id}(id=${director.id})}">Ver</a>
 					<a th:href="@{/directores/editar/{id}(id=${director.id})}">Editar</a>
-					<a th:href="@{/directores/eliminar/{id}(id=${director.id})}"  onclick="return confirm('¿Estás seguro?')">Eliminar</a>
+					<a th:href="@{/directores/eliminar/{id}(id=${director.id})}"
+						onclick="return confirm('¿Estás seguro?')">Eliminar</a>
 				</td>
 			</tr>
 		</tbody>
 	</table>
-	
+
 	<!-- Controles de paginación -->
 	<div class="pagination" th:if="${directores.hasContent()}">
-	    <!-- Primera página -->
-	    <a th:if="${directores.first == false}" 
-	       th:href="@{/directores(page=0, size=${directores.size}, nombre=${nombreBusqueda})}">Primera</a>
-	    <span th:if="${directores.first}">Primera</span>
-	    
-	    <!-- Página anterior -->
-	    <a th:if="${directores.hasPrevious()}" 
-	       th:href="@{/directores(page=${directores.number - 1}, size=${directores.size}, nombre=${nombreBusqueda})}">Anterior</a>
-	    <span th:if="${!directores.hasPrevious()}">Anterior</span>
-	    
-	    <!-- Números de página -->
-	    <th:block th:each="i : ${#numbers.sequence(0, directores.totalPages - 1)}" th:if="${directores.totalPages > 0}">
-	        <span th:if="${i == directores.number}" class="current" th:text="${i + 1}"></span>
-	        <a th:if="${i != directores.number}" 
-	           th:href="@{/directores(page=${i}, size=${directores.size}, nombre=${nombreBusqueda})}" 
-	           th:text="${i + 1}"></a>
-	    </th:block>
-	    
-	    <!-- Página siguiente -->
-	    <a th:if="${directores.hasNext()}" 
-	       th:href="@{/directores(page=${directores.number + 1}, size=${directores.size}, nombre=${nombreBusqueda})}">Siguiente</a>
-	    <span th:if="${!directores.hasNext()}">Siguiente</span>
-	    
-	    <!-- Última página -->
-	    <a th:if="${directores.last == false}" 
-	       th:href="@{/directores(page=${directores.totalPages - 1}, size=${directores.size}, nombre=${nombreBusqueda})}">Última</a>
-	    <span th:if="${directores.last}">Última</span>
-	    
-	    <div style="margin-top: 10px;display: flex;justify-content: flex-end;">
-	        <span th:text="'Página ' + ${directores.number + 1} + ' de ' + ${directores.totalPages}"></span>
-	    </div>
+		<!-- Primera página -->
+		<a th:if="${directores.first == false}"
+			th:href="@{/directores(page=0, size=${directores.size}, nombre=${nombreBusqueda})}">Primera</a>
+		<span th:if="${directores.first}">Primera</span>
+
+		<!-- Página anterior -->
+		<a th:if="${directores.hasPrevious()}"
+			th:href="@{/directores(page=${directores.number - 1}, size=${directores.size}, nombre=${nombreBusqueda})}">Anterior</a>
+		<span th:if="${!directores.hasPrevious()}">Anterior</span>
+
+		<!-- Números de página -->
+		<th:block th:each="i : ${#numbers.sequence(0, directores.totalPages - 1)}" th:if="${directores.totalPages > 0}">
+			<span th:if="${i == directores.number}" class="current" th:text="${i + 1}"></span>
+			<a th:if="${i != directores.number}"
+				th:href="@{/directores(page=${i}, size=${directores.size}, nombre=${nombreBusqueda})}"
+				th:text="${i + 1}"></a>
+		</th:block>
+
+		<!-- Página siguiente -->
+		<a th:if="${directores.hasNext()}"
+			th:href="@{/directores(page=${directores.number + 1}, size=${directores.size}, nombre=${nombreBusqueda})}">Siguiente</a>
+		<span th:if="${!directores.hasNext()}">Siguiente</span>
+
+		<!-- Última página -->
+		<a th:if="${directores.last == false}"
+			th:href="@{/directores(page=${directores.totalPages - 1}, size=${directores.size}, nombre=${nombreBusqueda})}">Última</a>
+		<span th:if="${directores.last}">Última</span>
+
+		<div style="margin-top: 10px;display: flex;justify-content: flex-end;">
+			<span th:text="'Página ' + ${directores.number + 1} + ' de ' + ${directores.totalPages}"></span>
+		</div>
 	</div>
 
 	<a th:href="@{/directores/nuevo}" class="button">Añadir Nuevo Director</a>

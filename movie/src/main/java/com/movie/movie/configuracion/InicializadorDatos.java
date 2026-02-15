@@ -34,6 +34,7 @@ public class InicializadorDatos implements CommandLineRunner  {
 		            LocalDate.of(1999, 12, 31).atStartOfDay(ZoneId.systemDefault()).toInstant()
 		        );
 
+	           
 	@Override
 	public void run(String... args) throws Exception {
 
