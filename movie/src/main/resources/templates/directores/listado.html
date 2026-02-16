@@ -132,6 +132,13 @@
 
 	<a th:href="@{/directores/nuevo}" class="button">Añadir Nuevo Director</a>
 	<a th:href="@{/directores/peliculas}" class="button">Ver detalles de las Películas</a>
+	
+	<hr>
+	<form th:action="@{/logout}" method="post" style="display: inline;">
+	    <button type="submit" class="button" style="background-color: #dc3545; color: white; border: none; cursor: pointer;">
+	        Cerrar Sesión
+	    </button>
+	</form>
 </body>
 
 </html>
