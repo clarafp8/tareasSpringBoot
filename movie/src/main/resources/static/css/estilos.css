@@ -42,6 +42,11 @@ h3 {
    FORMULARIOS
 ======================= */
 form {
+    padding: 20px;
+    margin-bottom: 30px;
+}
+
+form:not(.logout) {
     background-color: #ffffff;
     padding: 20px;
     border-radius: 14px;
@@ -95,6 +100,8 @@ a.button {
     text-decoration: none;
     transition: background-color 0.3s, transform 0.2s, box-shadow 0.2s;
     margin-top: 10px;
+	margin-bottom: 10px;
+
 }
 
 button:hover,

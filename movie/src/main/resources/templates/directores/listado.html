@@ -49,6 +49,8 @@
 
 <body>
 	<h1>Listado de Directores</h1>
+	<!-- Añade fragmento: ~{...} -->
+		<div th:replace="~{fragmentos/layout :: usuario}"></div>
 	<!-- Barra de búsqueda -->
 	<div class="search-bar">
 		<form method="get" th:action="@{/directores}">
@@ -73,7 +75,7 @@
 			</tr>
 		</thead>
 		<tbody>
-			<tr th:each="director : ${directores}">
+			<tr th:each="director:${directores}">
 				<td th:text="${director.nombre}"></td>
 				<td th:text="${director.fechaNacimiento}"></td>
 				<td>
@@ -134,11 +136,7 @@
 	<a th:href="@{/directores/peliculas}" class="button">Ver detalles de las Películas</a>
 	
 	<hr>
-	<form th:action="@{/logout}" method="post" style="display: inline;">
-	    <button type="submit" class="button" style="background-color: #dc3545; color: white; border: none; cursor: pointer;">
-	        Cerrar Sesión
-	    </button>
-	</form>
+	<div th:replace="~{fragmentos/layout :: logout}"></div>
 </body>
 
 </html>
