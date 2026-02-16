@@ -8,73 +8,93 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import com.github.javafaker.Faker;
 import com.movie.movie.entidad.Director;
 import com.movie.movie.entidad.Pelicula;
+import com.movie.movie.entidad.enumerado.Rol;
 import com.movie.movie.repositorio.DirectorRepositorio;
 import com.movie.movie.repositorio.PeliculaRepositorio;
 
 @Component
-public class InicializadorDatos implements CommandLineRunner  {
-	 @Autowired
-	    private DirectorRepositorio directorRepositorio;
+public class InicializadorDatos implements CommandLineRunner {
 
-	    @Autowired
-	    private PeliculaRepositorio peliculaRepositorio;
-	    
-	    Date startDate = java.util.Date.from(
-	            LocalDate.of(1980, 1, 1).atStartOfDay(ZoneId.systemDefault()).toInstant()
-	        );
-	        Date endDatePeli = java.util.Date.from(
-	            LocalDate.of(2023, 12, 31).atStartOfDay(ZoneId.systemDefault()).toInstant()
-	        );
-	        Date endDateDire = java.util.Date.from(
-		            LocalDate.of(1999, 12, 31).atStartOfDay(ZoneId.systemDefault()).toInstant()
-		        );
+    @Autowired
+    private DirectorRepositorio directorRepositorio;
 
-	           
-	@Override
-	public void run(String... args) throws Exception {
+    @Autowired
+    private PeliculaRepositorio peliculaRepositorio;
 
-		 Faker faker = new Faker();
-	        List<Director> directores = new ArrayList<>();
-	     // Crear fechas límite
-	        
-	        // Crear 30 directores
-	        for (int i = 0; i < 30; i++) {
-	            Director director = new Director();
-	            director.setNombre(faker.name().fullName());
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
-	            // Inicializar lista de películas
-	            director.setPeliculas(new ArrayList<>());
-	         // ESTA ES LA LÍNEA QUE FALTA:
-	            director.setFechaNacimiento(faker.date().between(startDate, endDateDire)
-	                    .toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+    Date startDate = java.util.Date.from(
+            LocalDate.of(1980, 1, 1).atStartOfDay(ZoneId.systemDefault()).toInstant()
+    );
+    Date endDatePeli = java.util.Date.from(
+            LocalDate.of(2023, 12, 31).atStartOfDay(ZoneId.systemDefault()).toInstant()
+    );
+    Date endDateDire = java.util.Date.from(
+            LocalDate.of(1999, 12, 31).atStartOfDay(ZoneId.systemDefault()).toInstant()
+    );
 
-	            // Crear de 1 a 3 películas por director
-	            int numPeliculas = faker.number().numberBetween(1, 4);
-	            for (int j = 0; j < numPeliculas; j++) {
-	                Pelicula pelicula = new Pelicula();
-	                pelicula.setTitulo(faker.book().title());
-	                pelicula.setDirector(director);
-	                // Asignar campos obligatorios
-	                pelicula.setDuracion(faker.number().numberBetween(80, 180)); // minutos
-	                pelicula.setFechaLanzamiento(faker.date().between(startDate,
-	                		endDatePeli).toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+    @Override
+    public void run(String... args) throws Exception {
+        Faker faker = new Faker();
+        List<Director> directores = new ArrayList<>();
 
-	                // Añadir película al director
-	                director.getPeliculas().add(pelicula);
-	            }
+        // Crear 30 directores ficticios
+        for (int i = 0; i < 30; i++) {
+            Director director = new Director();
+            director.setNombre(faker.name().fullName());
+            director.setPeliculas(new ArrayList<>());
+            director.setFechaNacimiento(faker.date().between(startDate, endDateDire)
+                    .toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
 
-	            directores.add(director);
-	        }
+            // Crear de 1 a 3 películas
+            int numPeliculas = faker.number().numberBetween(1, 4);
+            for (int j = 0; j < numPeliculas; j++) {
+                Pelicula pelicula = new Pelicula();
+                pelicula.setTitulo(faker.book().title());
+                pelicula.setDirector(director);
+                pelicula.setDuracion(faker.number().numberBetween(80, 180));
+                pelicula.setFechaLanzamiento(faker.date().between(startDate, endDatePeli)
+                        .toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
 
-	        // Guardar todo en cascada
-	        directorRepositorio.saveAll(directores);
+                director.getPeliculas().add(pelicula);
+            }
+            directores.add(director);
+            directorRepositorio.saveAll(directores);
 
-	        System.out.println("Datos inicializados correctamente.");
-	    }
+        }
 
+        // CREAR DOS USUARIOS FIJOS
+        crearUsuarioSiNoExiste("admin", "admin123", Rol.ADMIN);
+        crearUsuarioSiNoExiste("usuario", "usuario123", Rol.USUARIO);
+
+        // Guardar todo en cascada
+
+        System.out.println("Datos inicializados correctamente.");
+    }
+
+    private void crearUsuarioSiNoExiste(String nombre, String contrasena, Rol rol) {
+        // Verificar que no exista un director con ese nombre
+        if (directorRepositorio.findByNombre(nombre) != null) {
+            return;
+        }
+
+        Director director = new Director();
+        director.setNombre(nombre);
+        director.setContrasena(passwordEncoder.encode(contrasena));
+        director.setRol(rol);
+        director.setPeliculas(new ArrayList<>());
+
+        // Asignar una fecha de nacimiento por defecto
+        director.setFechaNacimiento(LocalDate.of(1980, 1, 1));
+
+        directorRepositorio.save(director);
+    }
 }
+
